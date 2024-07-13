@@ -1,0 +1,59 @@
+﻿<Window x:Class="PDFExtractor.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PDFExtractor.UI"
+        mc:Ignorable="d"
+        Title="PDF Extractor" Height="450" Width="600"
+        Background="#F5F5F5"
+        Icon="pack://application:,,,/PDFExtractor.UI;component/Images/pdfextraction-logo.png">
+
+    <Grid Margin="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            
+            
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0" Source="pack://application:,,,/PDFExtractor.UI;component/Images/pdfextraction-logo.png" 
+               Width="64" Height="64" HorizontalAlignment="Left" Margin="5,0,0,16"/>
+        <TextBlock Grid.Row="0" Text="PDF Extractor" Style="{StaticResource HeaderTextBlock}" Margin="90,14,-4,12"/>
+
+        <Button Grid.Row="1" Content="Select PDF File" 
+                Command="{Binding SelectFileCommand}" 
+                Style="{StaticResource ModernButton}"
+                Margin="0,0,0,16"/>
+
+        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" 
+                   Margin="0,0,0,16" TextWrapping="Wrap"/>
+
+        <Grid Grid.Row="3" Visibility="{Binding IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ProgressBar Minimum="0" Maximum="100" 
+                         Value="{Binding ParsingProgress, Mode=OneWay}"
+                         Height="20"
+                         Margin="0,0,0,8"/>
+            <TextBlock Text="{Binding ParsingProgress, StringFormat={}{0}%}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" Margin="0,0,0,7"/>
+        </Grid>
+
+        <StackPanel Grid.Row="4" Orientation="Vertical" Margin="0,0,0,16">
+            <TextBlock Text="Page Ranges:" Style="{StaticResource SubHeaderTextBlock}"/>
+            <TextBlock Text="Enter page ranges separated by commas. Example: 1-5, 8, 10-15" 
+                       Style="{StaticResource CaptionTextBlock}"/>
+            <TextBox Text="{Binding PageRangeInput, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource ModernTextBox}"/>
+        </StackPanel>
+
+        <Button Grid.Row="5" Content="Generate PDF" 
+                Command="{Binding GeneratePDFCommand}"
+                Style="{StaticResource ModernButton}"
+                VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
